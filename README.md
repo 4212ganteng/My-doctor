@@ -46,7 +46,9 @@ onChangeText={(value) => setForm("password", value)}
 
 ```
 
+<h1 align="center">
 # ----- Firebase -------
+</h1>
 
 1. install fire base on project
 
