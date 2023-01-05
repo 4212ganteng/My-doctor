@@ -44,7 +44,7 @@ export const useForm = (initialValue) => {
 
 ```
  value={form.value}
-            onChangeText={(value) => setForm("password", value)}
+onChangeText={(value) => setForm("password", value)}
 
 ```
 
@@ -84,14 +84,14 @@ export default fire;
 
 on Register.js add code api firebase
 
-```
- const handleSubmit = () => {
-    setLoading(true);
-    console.log("ini data form", form);
-    // fire dari config yang kita buat tdi
-    const auth = getAuth(fire);
-    createUserWithEmailAndPassword(auth, form.email, form.password)
-      .then((userCredential) => {
+"""
+const handleSubmit = () => {
+setLoading(true);
+console.log("ini data form", form);
+// fire dari config yang kita buat tdi
+const auth = getAuth(fire);
+createUserWithEmailAndPassword(auth, form.email, form.password)
+.then((userCredential) => {
 
         setLoading(false);
         const user = userCredential.user;
@@ -103,5 +103,6 @@ on Register.js add code api firebase
         const errorMessage = error.message;
 
       });
-  };
-```
+
+};
+"""
