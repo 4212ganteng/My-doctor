@@ -1,18 +1,19 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { DumyDoctor2 } from "../assets";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function ChatListComp() {
+export default function ChatListComp({ onPress, name, text }) {
   return (
-    <View>
+    <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
         <Image source={DumyDoctor2} style={styles.avatar} />
         <View style={styles.wraperText}>
-          <Text style={styles.name}>Alexander Jannie</Text>
-          <Text>Baik ibu, terima kasih banyak atas wakt...</Text>
+          <Text style={styles.name}>{name}</Text>
+          <Text>{text}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

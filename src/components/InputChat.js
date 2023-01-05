@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "red",
+    borderColor: "#E9E9E9",
     flex: 1,
     height: 45,
   },
