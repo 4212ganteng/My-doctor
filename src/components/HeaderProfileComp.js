@@ -8,8 +8,8 @@ export default function HeaderProfileComp({ onPress }) {
     <View style={styles.page}>
       <ButtonComp type="icon-only" icon="back-light" onPress={onPress} />
       <View style={styles.title}>
-        <Text>Nairobi Putri Hayza</Text>
-        <Text>Dokter Anak</Text>
+        <Text style={styles.text}>Nairobi Putri Hayza</Text>
+        <Text style={styles.text}>Dokter Anak</Text>
       </View>
       <Image source={DumyUserChat} style={styles.avatar} />
     </View>
@@ -33,5 +33,8 @@ const styles = StyleSheet.create({
     width: 46,
     height: 46,
     borderRadius: 46 / 2,
+  },
+  text: {
+    color: "white",
   },
 });
