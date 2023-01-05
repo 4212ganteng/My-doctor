@@ -76,6 +76,32 @@ const firebaseConfig = {
 // Initialize Firebase
 const fire = initializeApp(firebaseConfig);
 // exportt biar bisa di gunakan dimna aja
-export default app;
+export default fire;
 
+```
+
+# let try to regist with auth email password
+
+on Register.js add code api firebase
+
+```
+ const handleSubmit = () => {
+    setLoading(true);
+    console.log("ini data form", form);
+    // fire dari config yang kita buat tdi
+    const auth = getAuth(fire);
+    createUserWithEmailAndPassword(auth, form.email, form.password)
+      .then((userCredential) => {
+
+        setLoading(false);
+        const user = userCredential.user;
+        console.log("success register ", user);
+      })
+      .catch((error) => {
+        setLoading(false);
+
+        const errorMessage = error.message;
+
+      });
+  };
 ```

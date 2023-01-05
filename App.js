@@ -1,7 +1,12 @@
-import { StyleSheet } from "react-native";
 import Router from "./Router";
-import Getstarted from "./src/pages/Getstarted";
+import FlashMessage from "react-native-flash-message";
 
 export default function App() {
-  return <Router />;
+  return (
+    <>
+      <Router />
+      {/* GLOBAL FLASH MESSAGE COMPONENT INSTANCE */}
+      <FlashMessage position="top" />
+    </>
+  );
 }

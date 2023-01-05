@@ -11,4 +11,4 @@ const firebaseConfig = {
 // Initialize Firebase
 const fire = initializeApp(firebaseConfig);
 // exportt biar bisa di gunakan dimna aja
-export default app;
+export default fire;
