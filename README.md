@@ -4,7 +4,7 @@
 
 code in utils useForm.js
 
-`````javascript
+```javascript
 import { useState } from "react";
 
 export const useForm = (initialValue) => {
@@ -13,17 +13,16 @@ export const useForm = (initialValue) => {
     values,
     // Parameter for onchange(get value from name)
     (formName, formValue) => {
-        // and set the state
+      // and set the state
       return setValues({ ...values, [formName]: formValue });
     },
   ];
 };
-
 ```
 
 # in Register.js
 
-````javascript
+```javascript
 
 <!-- call the custom hook useForm from utils -->
  const [form,setForm]=useForm({
@@ -41,7 +40,7 @@ export const useForm = (initialValue) => {
 
 # and the input code like this
 
-````javascript
+```javascript
  value={form.value}
 onChangeText={(value) => setForm("password", value)}
 
@@ -51,16 +50,16 @@ onChangeText={(value) => setForm("password", value)}
 
 1. install fire base on project
 
-````javascript
+```javascript
 yarn add firebase
 <!-- if u using NPM -->
 npm install firebase
-
+`
 ```
 
 2. create folder config and create file for save configurasi from fire base
 
-````javascript
+```javascript
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
@@ -69,15 +68,14 @@ const firebaseConfig = {
   projectId: "my-doctor-4212",
   storageBucket: "my-doctor-4212.appspot.com",
   messagingSenderId: "4212222",
-  appId: "1:4212ganteng"
+  appId: "1:4212ganteng",
 };
 
 // Initialize Firebase
 const fire = initializeApp(firebaseConfig);
 // exportt biar bisa di gunakan dimna aja
 export default fire;
-
-`````
+```
 
 # let try to regist with auth email password
 
