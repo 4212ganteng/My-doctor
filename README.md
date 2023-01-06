@@ -1,4 +1,3 @@
-
 <h1 align="center">
 -----custom Hook-------
 </h1>
@@ -156,5 +155,50 @@ export const db = getFirestore(fire);
     );
   };
 
+```
+```
+# Image picker
+source : https://docs.expo.dev/versions/latest/sdk/imagepicker/
+<h1 align="center">
+----- Upload Image from Galery -------
+</h1>
 
+
+```
+import * as ImagePicker from "expo-image-picker";
+
+
+  const GetPhoto = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log("ini data photo", result);
+    if (!result.canceled) {
+      const dataPoto = { uri: result.assets[0].uri };
+      setPhoto(dataPoto);
+    }
+  };
+
+// # add this code in app.json
+
+{
+  "expo": {
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ]
+  }
+}
+
+
+```
 `````
