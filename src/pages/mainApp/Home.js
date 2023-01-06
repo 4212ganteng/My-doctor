@@ -1,19 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { photoNull } from "../../assets";
 import DoctorCategory from "../../components/DoctorCategory";
 import DoctorRtaed from "../../components/DoctorRtaed";
 import GapComp from "../../components/GapComp";
 import NewsComp from "../../components/NewsComp";
 import SectProfile from "../../components/SectProfile";
+import { getData } from "../../utils/LocalStorage";
 
 export default function Home({ navigation }) {
+  const [profile, setProfile] = useState({
+    photo: photoNull,
+    fullName: "",
+    profession: "",
+  });
+
+  useEffect(() => {
+    getData("user").then((res) => {
+      console.log("data user", res);
+      setProfile(res);
+    });
+  }, []);
   return (
     <View style={styles.page}>
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.wrapperSection}>
             <GapComp height={30} />
-            <SectProfile onPress={() => navigation.navigate("Profile")} />
+            <SectProfile
+              img={profile.photo}
+              name={profile.fullName}
+              desc={profile.profession}
+              onPress={() => navigation.navigate("Profile")}
+            />
             <Text style={styles.welcome}>
               Mau konsultasi dengan siapa hari ini?
             </Text>
@@ -21,7 +40,7 @@ export default function Home({ navigation }) {
           <View style={styles.wrapperScroll}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.category}>
-                {/* biar g kepotong mas scroll */}
+                {/* biar g kepotong pas scroll */}
                 <GapComp width={32} />
                 <DoctorCategory
                   onPress={() => navigation.navigate("ChoseDoctor")}

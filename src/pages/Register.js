@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
+import { addDoc, collection } from "firebase/firestore";
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { showMessage } from "react-native-flash-message";
@@ -9,8 +9,8 @@ import HeaderComp from "../components/HeaderComp";
 import InputComp from "../components/InputComp";
 import { db, fire } from "../config/Firbase";
 import LoadingComp from "../utils/LoadingComp";
+import { storeData } from "../utils/LocalStorage";
 import { useForm } from "../utils/useForm";
-import { collection, addDoc } from "firebase/firestore";
 
 export default function Register({ navigation }) {
   const [loading, setLoading] = useState(false);
@@ -20,6 +20,7 @@ export default function Register({ navigation }) {
     profession: "",
     email: "",
     password: "",
+    uid: "",
   });
   const handleSubmit = () => {
     setLoading(true);
@@ -30,14 +31,20 @@ export default function Register({ navigation }) {
       async (res) => {
         // reset form input
         setForm("reset");
-        setLoading(false);
-        const idUser = res.user.uid;
 
-        //  save data to DB
+        //  save data to DB😉
         try {
           // db from config fire
           const docRef = await addDoc(collection(db, "users"), form);
-          console.log("Document written with ID: ", docRef.id);
+          setForm((form.uid = docRef.id));
+
+          // save data to local storage with key user and value form 😉
+          storeData("user", form);
+          // navigate dan bawa data 😂
+          navigation.navigate("UploadPhoto", form);
+
+          console.log("Succes regist ", form);
+          setLoading(false);
         } catch (e) {
           setLoading(false);
 

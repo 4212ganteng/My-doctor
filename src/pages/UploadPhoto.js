@@ -1,16 +1,22 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
-import HeaderComp from "../components/HeaderComp";
+import { Image, StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { ILBtnAdd, ILBtnremove, photoNull } from "../assets/illustration";
 import ButtonComp from "../components/ButtonComp";
-import LinkComp from "../components/LinkComp";
 import GapComp from "../components/GapComp";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import * as ImagePicker from "expo-image-picker";
+import HeaderComp from "../components/HeaderComp";
+import LinkComp from "../components/LinkComp";
+import { storeData } from "../utils/LocalStorage";
 
-export default function UploadPhoto({ navigation }) {
+export default function UploadPhoto({ navigation, route }) {
+  // parameter ROUTE  untuk menangkap data yang di kirim😉
+  const { fullName, profession, uid } = route.params;
+
   const [hasPhoto, setHasPhoto] = React.useState(false);
   const [photo, setPhoto] = useState(photoNull);
+  const [photDB, setPhotoDB] = useState("");
   const GetPhoto = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -23,7 +29,30 @@ export default function UploadPhoto({ navigation }) {
     console.log("ini data photo", result);
     if (!result.canceled) {
       const dataPoto = { uri: result.assets[0].uri };
+
       setPhoto(dataPoto);
+      setHasPhoto(true);
+      setPhotoDB(dataPoto.uri);
+      console.log("ini data photo db", photDB);
+    }
+  };
+
+  const UpPhotoDB = async () => {
+    try {
+      // init services
+      const db = getFirestore();
+      let docRef = doc(db, "users", uid);
+      updateDoc(docRef, {
+        photo: photDB,
+      });
+
+      // save local storage +poto
+      const data = route.params;
+      data.photo = photo;
+      storeData("user", data);
+      navigation.navigate("MainApp");
+    } catch (e) {
+      console.log("err", e);
     }
   };
 
@@ -38,14 +67,14 @@ export default function UploadPhoto({ navigation }) {
             {hasPhoto && <ILBtnremove style={styles.addPhoto} />}
             {!hasPhoto && <ILBtnAdd style={styles.addPhoto} />}
           </TouchableOpacity>
-          <Text style={styles.name}>Shayna Melinda</Text>
-          <Text style={styles.profession}>Product Desainer</Text>
+          <Text style={styles.name}>{fullName}</Text>
+          <Text style={styles.profession}>{profession}</Text>
         </View>
         <View>
           <ButtonComp
             disable={!hasPhoto}
             title="Upload and Continue"
-            onPress={() => navigation.replace("MainApp")}
+            onPress={UpPhotoDB}
           />
           <GapComp height={30} />
           <LinkComp

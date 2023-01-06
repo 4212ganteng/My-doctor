@@ -12,5 +12,6 @@ const firebaseConfig = {
 // Initialize Firebase
 export const fire = initializeApp(firebaseConfig);
 // Initialize Realtime Database and get a reference to the service
+
 export const db = getFirestore(fire);
 // exportt biar bisa di gunakan dimna aja

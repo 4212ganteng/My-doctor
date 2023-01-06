@@ -3,13 +3,13 @@ import React from "react";
 import { DumyUser } from "../assets";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function SectProfile({ onPress }) {
+export default function SectProfile({ onPress, img, name, desc }) {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Image source={DumyUser} style={styles.avatar} />
+      <Image source={img} style={styles.avatar} />
       <View>
-        <Text style={styles.name}>Shayna Melinda</Text>
-        <Text style={styles.profession}>Product Designer</Text>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.profession}>{desc}</Text>
       </View>
     </TouchableOpacity>
   );
