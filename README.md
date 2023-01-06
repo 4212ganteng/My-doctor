@@ -1,5 +1,7 @@
-# -----custom Hook-------
 
+<h1 align="center">
+-----custom Hook-------
+</h1>
 # useForm
 
 code in utils useForm.js
@@ -47,7 +49,7 @@ onChangeText={(value) => setForm("password", value)}
 ```
 
 <h1 align="center">
-# ----- Firebase -------
+----- Firebase -------
 </h1>
 
 1. install fire base on project
