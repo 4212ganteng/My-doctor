@@ -83,7 +83,7 @@ export default fire;
 
 on Register.js add code api firebase
 
-````javascript
+`````javascript
 
 const handleSubmit = () => {
 setLoading(true);
@@ -107,4 +107,52 @@ createUserWithEmailAndPassword(auth, form.email, form.password)
 };
 
 ```
+# save data to DB
+add fire store into config/fire.js
+````javascript
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+
+
+// Initialize Firebase
+export const fire = initializeApp(firebaseConfig);
+// Initialize Realtime Database and get a reference to the service
+export const db = getFirestore(fire);
+// exportt biar bisa di gunakan dimna aja
 ````
+
+````javascript
+ const handleSubmit = () => {
+    setLoading(true);
+
+    const auth = getAuth(fire);
+    createUserWithEmailAndPassword(auth, form.email, form.password).then(
+      async (res) => {
+        // reset form input
+        setForm("reset");
+        setLoading(false);
+        const idUser = res.user.uid;
+
+        //  save data to DB
+        try {
+          // db from config fire
+          const docRef = await addDoc(collection(db, "users"), form);
+          console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+          setLoading(false);
+
+          const errorMessage = error.message;
+          showMessage({
+            message: "failed to Register",
+            description: errorMessage,
+            type: "danger",
+            statusBarHeight: 10,
+          });
+        }
+      }
+    );
+  };
+
+
+`````

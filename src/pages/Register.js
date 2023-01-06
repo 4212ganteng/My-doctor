@@ -1,14 +1,16 @@
-import { StyleSheet, Text, View } from "react-native";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
 import React, { useState } from "react";
-import InputComp from "../components/InputComp";
+import { StyleSheet, View } from "react-native";
+import { showMessage } from "react-native-flash-message";
+import { ScrollView } from "react-native-gesture-handler";
 import ButtonComp from "../components/ButtonComp";
 import HeaderComp from "../components/HeaderComp";
-import { ScrollView } from "react-native-gesture-handler";
-import { useForm } from "../utils/useForm";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import fire from "../config/Firbase";
+import InputComp from "../components/InputComp";
+import { db, fire } from "../config/Firbase";
 import LoadingComp from "../utils/LoadingComp";
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { useForm } from "../utils/useForm";
+import { collection, addDoc } from "firebase/firestore";
 
 export default function Register({ navigation }) {
   const [loading, setLoading] = useState(false);
@@ -24,25 +26,31 @@ export default function Register({ navigation }) {
     // console.log("ini data form", form);
     // fire dari config yang kita buat tdi
     const auth = getAuth(fire);
-    createUserWithEmailAndPassword(auth, form.email, form.password)
-      .then((userCredential) => {
+    createUserWithEmailAndPassword(auth, form.email, form.password).then(
+      async (res) => {
         // reset form input
         setForm("reset");
         setLoading(false);
-        const user = userCredential.user;
-        console.log("success register ", user);
-      })
-      .catch((error) => {
-        setLoading(false);
+        const idUser = res.user.uid;
 
-        const errorMessage = error.message;
-        showMessage({
-          message: "failed to Register",
-          description: errorMessage,
-          type: "danger",
-          statusBarHeight: 10,
-        });
-      });
+        //  save data to DB
+        try {
+          // db from config fire
+          const docRef = await addDoc(collection(db, "users"), form);
+          console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+          setLoading(false);
+
+          const errorMessage = error.message;
+          showMessage({
+            message: "failed to Register",
+            description: errorMessage,
+            type: "danger",
+            statusBarHeight: 10,
+          });
+        }
+      }
+    );
   };
   return (
     <>
