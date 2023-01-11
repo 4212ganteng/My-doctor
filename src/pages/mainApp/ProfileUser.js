@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import { DumyProfile1 } from "../../assets";
 import HeaderComp from "../../components/HeaderComp";
 import ListDoctor from "../../components/ListDoctor";
 import ProfileComp from "../../components/ProfileComp";
+import { getData } from "../../utils/LocalStorage";
+import { useForm } from "../../utils/useForm";
 
 export default function ProfileUser({ navigation }) {
   return (
     <View>
       <HeaderComp title="Profile" onPress={() => navigation.goBack()} />
       <View style={styles.profile}>
-        <ProfileComp name="Shayna Melinda" desc="Product Designer" />
+        <ProfileComp name={profile.fullName} desc="Product Designer" />
       </View>
       <View style={styles.list}>
         <ListDoctor
