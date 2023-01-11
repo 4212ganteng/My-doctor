@@ -1,4 +1,5 @@
 import * as ImagePicker from "expo-image-picker";
+import { ref, update } from "firebase/database";
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
@@ -8,6 +9,7 @@ import ButtonComp from "../components/ButtonComp";
 import GapComp from "../components/GapComp";
 import HeaderComp from "../components/HeaderComp";
 import LinkComp from "../components/LinkComp";
+import { Database } from "../config/Firbase";
 import { storeData } from "../utils/LocalStorage";
 
 export default function UploadPhoto({ navigation, route }) {
@@ -39,13 +41,10 @@ export default function UploadPhoto({ navigation, route }) {
 
   const UpPhotoDB = async () => {
     try {
-      // init services
-      const db = getFirestore();
-      let docRef = doc(db, "users", uid);
-      updateDoc(docRef, {
+      // update db
+      update(ref(Database, "users/" + uid), {
         photo: photDB,
       });
-
       // save local storage +poto
       const data = route.params;
       data.photo = photo;

@@ -26,10 +26,11 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   name: {
-    fontSize: 20,
+    fontSize: 18,
+    color: "#112340",
   },
   profession: {
-    fontSize: 20,
-    color: "#fff",
+    fontSize: 12,
+    color: "#7D8797",
   },
 });

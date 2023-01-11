@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { addDoc, collection } from "firebase/firestore";
+import { ref, set } from "firebase/database";
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { showMessage } from "react-native-flash-message";
@@ -7,7 +7,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import ButtonComp from "../components/ButtonComp";
 import HeaderComp from "../components/HeaderComp";
 import InputComp from "../components/InputComp";
-import { db, fire } from "../config/Firbase";
+import { auth, Database, fire } from "../config/Firbase";
 import LoadingComp from "../utils/LoadingComp";
 import { storeData } from "../utils/LocalStorage";
 import { useForm } from "../utils/useForm";
@@ -22,43 +22,55 @@ export default function Register({ navigation }) {
     password: "",
     uid: "",
   });
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true);
-    // console.log("ini data form", form);
-    // fire dari config yang kita buat tdi
-    const auth = getAuth(fire);
-    createUserWithEmailAndPassword(auth, form.email, form.password).then(
-      async (res) => {
-        // reset form input
-        setForm("reset");
+    try {
+      const createUser = await createUserWithEmailAndPassword(
+        auth,
+        form.email,
+        form.password
+      );
+      setForm((form.uid = createUser.user.uid));
+      const id = createUser.user.uid;
+      console.log(id);
 
-        //  save data to DB😉
-        try {
-          // db from config fire
-          const docRef = await addDoc(collection(db, "users"), form);
-          setForm((form.uid = docRef.id));
+      //  save DB
+      try {
+        console.log("on trycatch", id);
 
-          // save data to local storage with key user and value form 😉
-          storeData("user", form);
-          // navigate dan bawa data 😂
-          navigation.navigate("UploadPhoto", form);
-
-          console.log("Succes regist ", form);
-          setLoading(false);
-        } catch (e) {
-          setLoading(false);
-
-          const errorMessage = error.message;
-          showMessage({
-            message: "failed to Register",
-            description: errorMessage,
-            type: "danger",
-            statusBarHeight: 10,
-          });
-        }
+        // g tau harus d pecah
+        const saved = set(ref(Database, `/users/` + id), {
+          fullName: form.fullName,
+          profession: form.profession,
+          email: form.email,
+          password: form.password,
+          uid: form.uid,
+        });
+        storeData("user", saved);
+        setLoading(false);
+        navigation.replace("UploadPhoto", form);
+      } catch (error) {
+        setLoading(false);
+        const errsavedb = error.message;
+        showMessage({
+          message: "failed to Register",
+          description: errsavedb,
+          type: "danger",
+          statusBarHeight: 10,
+        });
       }
-    );
+    } catch (error) {
+      setLoading(false);
+      const errorMessage = error.message;
+      showMessage({
+        message: "failed to Register",
+        description: errorMessage,
+        type: "danger",
+        statusBarHeight: 10,
+      });
+    }
   };
+
   return (
     <>
       <View style={styles.page}>
