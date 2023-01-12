@@ -1,14 +1,21 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { DumyUser, ILBtnremove } from "../assets";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function ProfileComp({ name, desc, isRemove }) {
+export default function ProfileComp({ name, desc, isRemove, img, onPress }) {
   return (
     <View style={styles.page}>
-      <View style={styles.borderProfile}>
-        <Image source={DumyUser} style={styles.avatar} />
-        {isRemove && <ILBtnremove style={styles.icon} />}
-      </View>
+      {isRemove ? (
+        <TouchableOpacity style={styles.borderProfile} onPress={onPress}>
+          <Image source={img} style={styles.avatar} />
+          {isRemove && <ILBtnremove style={styles.icon} />}
+        </TouchableOpacity>
+      ) : (
+        <View style={styles.borderProfile} onPress={onPress}>
+          <Image source={img} style={styles.avatar} />
+        </View>
+      )}
 
       {name && (
         <View>

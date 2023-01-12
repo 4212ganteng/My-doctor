@@ -3,6 +3,7 @@ import { child, get, getDatabase, ref } from "firebase/database";
 import { collection, doc, getDoc, getFirestore } from "firebase/firestore";
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { showMessage } from "react-native-flash-message";
 import { ILlogo } from "../assets/illustration";
 import ButtonComp from "../components/ButtonComp";
 import InputComp from "../components/InputComp";
@@ -47,11 +48,24 @@ export default function Login({ navigation }) {
           setLoading(false);
         } catch (error) {
           setLoading(false);
+          showMessage({
+            message: "Login gagal",
+            description: error.message,
+            type: "danger",
+            statusBarHeight: 10,
+          });
+
           console.log("err get db", error);
         }
       })
       .catch((error) => {
         setLoading(false);
+        showMessage({
+          message: "Login gagal",
+          description: error.message,
+          type: "danger",
+          statusBarHeight: 10,
+        });
         console.log(error);
       });
   };

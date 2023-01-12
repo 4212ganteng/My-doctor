@@ -19,6 +19,8 @@ export default function UploadPhoto({ navigation, route }) {
   const [hasPhoto, setHasPhoto] = React.useState(false);
   const [photo, setPhoto] = useState(photoNull);
   const [photDB, setPhotoDB] = useState("");
+
+  // image picker 😎
   const GetPhoto = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({

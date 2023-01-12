@@ -7,6 +7,7 @@ export default function InputComp({
   secureTextEntry,
   value,
   onChangeText,
+  disable,
 }) {
   const [border, setBorder] = useState("#E9E9E9");
   const handleFocus = () => {
@@ -25,6 +26,8 @@ export default function InputComp({
         secureTextEntry={secureTextEntry}
         value={value}
         onChangeText={onChangeText}
+        editable={!disable}
+        selectTextOnFocus={!disable}
       />
     </View>
   );

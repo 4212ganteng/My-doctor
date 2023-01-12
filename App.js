@@ -1,12 +1,26 @@
 import Router from "./Router";
 import FlashMessage from "react-native-flash-message";
+import { Provider } from "react-redux";
+import store from "./src/Redux/store";
+import { useState } from "react";
+import LoadingComp from "./src/utils/LoadingComp";
 
-export default function App() {
+const MainApp = () => {
+  const [loading, setLoading] = useState(false);
+
   return (
     <>
       <Router />
-      {/* GLOBAL FLASH MESSAGE COMPONENT INSTANCE */}
       <FlashMessage position="top" />
+      {loading && <LoadingComp />}
     </>
+  );
+};
+
+export default function App() {
+  return (
+    <Provider store={store}>
+      <MainApp />
+    </Provider>
   );
 }

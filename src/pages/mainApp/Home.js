@@ -10,7 +10,7 @@ import { getData } from "../../utils/LocalStorage";
 
 export default function Home({ navigation }) {
   const [profile, setProfile] = useState({
-    photo: <photoNull />,
+    photo: photoNull,
     fullName: "",
     profession: "",
     uid: "",
@@ -18,12 +18,12 @@ export default function Home({ navigation }) {
 
   useEffect(() => {
     getData("user").then((res) => {
-      console.log("data user", res);
-      setProfile(res);
+      const data = res;
+      data.photo = { uri: res.photo };
+      setProfile(data);
     });
   }, []);
 
-  console.log(profile.photo);
   return (
     <View style={styles.page}>
       <View style={styles.container}>
@@ -31,7 +31,7 @@ export default function Home({ navigation }) {
           <View style={styles.wrapperSection}>
             <GapComp height={30} />
             <SectProfile
-              img={{ uri: profile.photo }}
+              img={profile.photo}
               name={profile.fullName}
               desc={profile.profession}
               onPress={() => navigation.navigate("Profile")}
